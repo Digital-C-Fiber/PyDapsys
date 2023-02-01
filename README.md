@@ -1,5 +1,7 @@
 # PyDapsys - Read DAPSYS recordings with Python
 
+[![PyPI](https://img.shields.io/pypi/v/pydapsys?style=for-the-badge)](https://pypi.org/project/pydapsys/)
+
 PyDapsys is a package to read neurography recordings made with [DAPSYS](http://dapsys.net/) (Data Acquisition Processor System). It is based on a reverse-engineered specification of the binary data format used by the latest DAPSYS version.
 
 Optionally, the library provides functionality to store loaded data into [Neo](https://github.com/NeuralEnsemble/python-neo) datastrucutres, from where they can be exported into various other formats.
@@ -136,5 +138,3 @@ neo_block = NIPulseStimulatorToNeo(toc_root, pages, grouping_tolerance=1e-9).to_
       * Tracks for All Responses -> Optional. Will silently ignore spike trains if this folder does not exist
         
         * ... [Text] tracks... -> Converted into spike trains
-
-
