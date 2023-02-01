@@ -8,17 +8,21 @@ Optionally, the library provides functionality to store loaded data into [Neo](h
 
 ## Installation
 
-Download the latest release from the Github releases page.
+Either download the wheel file for offline installation or use pypi.
 
 ### Basic functionalities
 
 Will only offer the data representation of PyDapsys, without ability to convert to Neo. Has only numpy as sole dependency. 
+
+`pip install pydapsys`
 
 `pip install {name_of_downloaded_wheel}.whl`
 
 ### With Neo converters
 
 Install base library with additional dependencies required to load data into Neo datastructures. Writing Neo datastructures to some formats may require additional dependencies. Please see the Neo documentation for further information.
+
+`pip install pydapsys[neo]`
 
 `pip install {name_of_downloaded_wheel}.whl[neo]`
 
