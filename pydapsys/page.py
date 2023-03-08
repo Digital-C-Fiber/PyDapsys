@@ -50,5 +50,8 @@ class WaveformPage(DataPage):
     interval: Optional[float]
 
     @property
-    def irregular_recording(self) -> bool:
-        return len(self.timestamps) == len(self.values)
+    def is_irregular(self) -> bool:
+        """
+        returns True if the waveform is sampled irregularly
+        """
+        return self.interval is None
