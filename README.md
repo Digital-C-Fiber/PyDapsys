@@ -68,7 +68,7 @@ To get text data from a file, get the datastream object from the toc and access 
 from pydapsys.toc.entry import StreamType
 
 def get_pages(stream, expected_stream_type: StreamType):
-    if stream.entry_type != expected_stream_type:
+    if stream.stream_type != expected_stream_type:
         raise Exception(f"{stream.name} is not a {expected_stream_type.name} stream, but {stream.stream_type.name}")
     return [pages[page_id] for page_id in stream] # or [pages[page_id] for page_id in stream.page_ids]
 
