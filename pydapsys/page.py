@@ -55,3 +55,14 @@ class WaveformPage(DataPage):
         returns True if the waveform is sampled irregularly
         """
         return self.interval is None
+
+    @property
+    def last_timestamp(self) -> float:
+        """
+        Retunrs the last timestamp of this page:
+        If it is an irregular recording, it returns the last timestamp from :attr:`timestamps`
+        If it is a regular recording, it calculates the last timestamp from the first timestamp, the length of :attr:`values` and :attr:`interval`
+        """
+        if self.is_irregular:
+            return self.timestamps[-1]
+        return self.timestamps[0] + (len(self.values) - 1) * self.interval

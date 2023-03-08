@@ -5,7 +5,6 @@ import neo
 import numpy as np
 import numpy.typing as npt
 import quantities as pq
-from pydapsys.neoconverter import recording_segment_end
 
 from pydapsys.page import DataPage, WaveformPage
 from pydapsys.toc.entry import Root, Stream, StreamType
@@ -130,7 +129,7 @@ class DapsysToNeoConverter(ABC):
         current_set: List[WaveformPage] = [next(page_iter)]
         for page in page_iter:
             if not (float_comp(current_set[-1].interval, page.interval) and \
-                    not float_comp(recording_segment_end(current_set[-1]) + current_set[-1].interval,
+                    not float_comp(current_set[-1].last_timestamp + current_set[-1].interval,
                                    page.timestamps[0], epsilon=tolerance)):
                 current_set.append(page)
             else:
