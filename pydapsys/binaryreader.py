@@ -11,6 +11,8 @@ FLOAT_STRUCTS = Literal['e', 'f', 'd']
 
 class DapsysBinaryReader:
     def __init__(self, binio: BinaryIO, byte_order='<'):
+        if not binio.readable():
+            raise ValueError("Argument 'binio' is not readable")
         self.binio = binio
         self.byte_order = byte_order
 
