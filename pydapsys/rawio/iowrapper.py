@@ -6,7 +6,6 @@ import numpy as np
 import numpy.typing as npt
 
 from pydapsys.rawio import INT_STRUCTS, FLOAT_STRUCTS
-from pydapsys.rawio.basic import read_tuple
 
 
 class IOWrapper:
@@ -117,7 +116,7 @@ class IOWrapper:
         :param check_null: If the function should check if each function is unitilized according to visual C++ (0xCDCDCDCD)
         :return:Tuple containig the read data
         """
-        return read_tuple(type_fmt, 1, check_null=check_null)[0]
+        return self.read_tuple(type_fmt, 1, check_null=check_null)[0]
 
     @overload
     def read_u32(self, check_null: Literal[False] = ...) -> int:

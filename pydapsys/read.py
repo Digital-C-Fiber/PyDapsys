@@ -1,10 +1,7 @@
 from typing import BinaryIO, Tuple, Dict
 
 from pydapsys.page import DataPage, PageType, TextPage, WaveformPage
-from pydapsys.rawio.basic import read_u32, read_f64, read_bool, skip_64, skip_32, read_ubytes
-from pydapsys.rawio.embedded import read_str
 from pydapsys.rawio.iowrapper import IOWrapper
-from pydapsys.rawio.np_embedded import read_f32_nparray, read_f64_nparray, read_u32_nparray
 from pydapsys.toc.entry import Entry, EntryType, Folder, Root, StreamType, Stream
 from pydapsys.toc.plot import PlotConfig, PlotType, LatencyPlotUnit, PointStyle, RGBA8
 from pydapsys.util.structs import CaseInsensitiveDict
