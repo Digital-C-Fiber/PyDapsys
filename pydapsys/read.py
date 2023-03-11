@@ -1,7 +1,7 @@
 from typing import BinaryIO, Tuple, Dict
 
 from pydapsys.page import DataPage, PageType, TextPage, WaveformPage
-from pydapsys.rawio.binaryreader import DapsysBinaryReader
+from pydapsys.binaryreader import DapsysBinaryReader
 from pydapsys.toc.entry import Entry, EntryType, Folder, Root, StreamType, Stream
 from pydapsys.toc.plot import PlotConfig, PlotType, LatencyPlotUnit, PointStyle, RGBA8
 from pydapsys.util.structs import CaseInsensitiveDict

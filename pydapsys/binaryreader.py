@@ -5,7 +5,8 @@ from typing import BinaryIO, Tuple, overload, Literal, Optional, Union
 import numpy as np
 import numpy.typing as npt
 
-from pydapsys.rawio import INT_STRUCTS, FLOAT_STRUCTS
+INT_STRUCTS = Literal['b', 'B', 'h', 'H', 'i', 'I', 'l', 'L', 'n', 'N', 'P']
+FLOAT_STRUCTS = Literal['e', 'f', 'd']
 
 
 class DapsysBinaryReader:
