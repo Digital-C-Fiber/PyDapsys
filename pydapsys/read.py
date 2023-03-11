@@ -91,8 +91,8 @@ def _read_page(file: IOWrapper) -> DataPage:
     else:
         raise Exception(f"Unhandled page type {type}")
 
-def read_from(binio: BinaryIO) -> Tuple[Root, Dict[int, DataPage]]:
-    dapsys_io = IOWrapper(binio)
+def read_from(binio: BinaryIO, byte_order='<') -> Tuple[Root, Dict[int, DataPage]]:
+    dapsys_io = IOWrapper(binio, byte_order=byte_order)
     dapsys_io.skip(0x30)
     page_count = dapsys_io.read_u32()
     pages = {page.id: page for page in (_read_page(dapsys_io) for _ in range(page_count))}
