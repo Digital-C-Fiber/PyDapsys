@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import quantities as pq
 
+from pydapsys.file import File
 from pydapsys.page import DataPage, WaveformPage, TextPage, PageType
 from pydapsys.toc.entry import Root, Stream, StreamType
 from pydapsys.util.floats import float_comp
@@ -15,15 +16,11 @@ class DapsysToNeoConverter(ABC):
     """ Converter to put Dapsys recordings into the neo structure
 
     This abstract base class provides common functionalities to transform Dapsys streams into common neo structures
-    :param toc: Root of the table of contents
-    :type toc: class:`pydapsys.toc.entry.Root`
-    :param pages: Mapping between the id of the data page and itself
-    :type toc: class:`typing.Mapping[int, pydapsys.page.DataPage]`
+    :param file: PyDapsys dapsys file
     """
 
-    def __init__(self, toc: Root, pages: Mapping[int, DataPage]):
-        self.toc = toc
-        self.pages = pages
+    def __init__(self, file: File):
+        self.file = file
 
     @abstractmethod
     def to_neo(self) -> neo.Block:
@@ -38,7 +35,7 @@ class DapsysToNeoConverter(ABC):
         gets the page with the given id and checks if it is of the requested type.
         Throws an exception if the type doesn't match
         """
-        page = self.pages[pid]
+        page = self.file.pages[pid]
         if page.type != ptype:
             raise Exception(f"page {pid} is not of type {ptype.Text}, but {page.type.Text}")
         return page
