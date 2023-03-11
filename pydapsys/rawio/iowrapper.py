@@ -265,7 +265,7 @@ class IOWrapper:
         :return: Numpy array containing the values read
         """
         value_counts = self.read_u32()
-        raw_data = self.binio.read(value_counts)
+        raw_data = self.binio.read(value_counts * dtype.itemsize)
         return np.frombuffer(raw_data, dtype=dtype.newbyteorder(self.byte_order))
 
     def read_f32_nparray(self) -> npt.NDArray[np.float32]:
