@@ -1,13 +1,13 @@
 from typing import BinaryIO, Tuple, Dict
 
 from pydapsys.page import DataPage, PageType, TextPage, WaveformPage
-from pydapsys.rawio.iowrapper import IOWrapper
+from pydapsys.rawio.binaryreader import DapsysBinaryReader
 from pydapsys.toc.entry import Entry, EntryType, Folder, Root, StreamType, Stream
 from pydapsys.toc.plot import PlotConfig, PlotType, LatencyPlotUnit, PointStyle, RGBA8
 from pydapsys.util.structs import CaseInsensitiveDict
 
 
-def _read_plot_config(file: IOWrapper) -> PlotConfig:
+def _read_plot_config(file: DapsysBinaryReader) -> PlotConfig:
     """
     Reads a plot configuration from a binary file
     :param file: Opened binary file to read from
@@ -26,7 +26,7 @@ def _read_plot_config(file: IOWrapper) -> PlotConfig:
                       hist_begin)
 
 
-def _read_toc_entry(file: IOWrapper) -> Entry:
+def _read_toc_entry(file: DapsysBinaryReader) -> Entry:
     """
     Reads an entry from the table of contents. Children will be read recursively.
     :param file: Opened binary file to read from
@@ -52,7 +52,7 @@ def _read_toc_entry(file: IOWrapper) -> Entry:
         raise Exception(f"Unhandled entry type {type}")
 
 
-def _read_toc(file: IOWrapper) -> Root:
+def _read_toc(file: DapsysBinaryReader) -> Root:
     """
     Reads the Root of the table of contents and recursively all further elements of it.
     :param file: Opened binary file to read from
@@ -67,7 +67,7 @@ def _read_toc(file: IOWrapper) -> Root:
     return Root(name=root_name, footer=footer, children=CaseInsensitiveDict.from_dict(children))
 
 
-def _read_page(file: IOWrapper) -> DataPage:
+def _read_page(file: DapsysBinaryReader) -> DataPage:
     """
     Reads a page. Dynamically creates either a text page or a recording page, depending on the read page type.
     :param file: Opened binary file to read from
@@ -92,7 +92,7 @@ def _read_page(file: IOWrapper) -> DataPage:
         raise Exception(f"Unhandled page type {type}")
 
 def read_from(binio: BinaryIO, byte_order='<') -> Tuple[Root, Dict[int, DataPage]]:
-    dapsys_io = IOWrapper(binio, byte_order=byte_order)
+    dapsys_io = DapsysBinaryReader(binio, byte_order=byte_order)
     dapsys_io.skip(0x30)
     page_count = dapsys_io.read_u32()
     pages = {page.id: page for page in (_read_page(dapsys_io) for _ in range(page_count))}

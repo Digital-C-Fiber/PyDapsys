@@ -8,7 +8,7 @@ import numpy.typing as npt
 from pydapsys.rawio import INT_STRUCTS, FLOAT_STRUCTS
 
 
-class IOWrapper:
+class DapsysBinaryReader:
     def __init__(self, binio: BinaryIO, byte_order='<'):
         self.binio = binio
         self.byte_order = byte_order
