@@ -65,11 +65,11 @@ class DapsysToNeoConverter(ABC):
         :return: A neo event containing the text of the comment pages as labels and their first timestamps as times
         """
         times = np.empty(len(page_ids), dtype=np.float64)
-        comments = np.empty(len(page_ids), dtype=str)
+        comments = []
         for i, page in enumerate(self.get_textpage(pid) for pid in page_ids):
             times[i] = page.timestamp_a
-            comments[i] = page.text
-        return neo.Event(times=times, labels=comments, units=pq.second, name=name, copy=False)
+            comments.append(page.text)
+        return neo.Event(times=times, labels=np.array(comments), units=pq.second, name=name, copy=False)
 
     def textstream_to_event(self, stream: Stream, name: Optional[str] = None) -> neo.Event:
         """Converts data from a text stream to a neo event.
