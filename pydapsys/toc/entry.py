@@ -84,6 +84,13 @@ class ChildContainer:
         """View containing only streams of this entry"""
         return self.children.select(lambda _, v: v.entry_type == EntryType.Stream)
 
+    @property
+    def structure(self) -> Dict:
+        d = dict()
+        for v in self.children.values():
+            d[v.name] = v.structure if isinstance(v, ChildContainer) else f"{v.stream_type.name};{len(v.page_ids)}"
+        return d
+
     def path(self, path: str) -> Entry:
         splits = path.split('/', 1)
         selected_entry = self[splits[0]]
