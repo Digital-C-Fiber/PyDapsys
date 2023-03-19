@@ -28,6 +28,9 @@ class ToCNoSuchChildError(ToCEntryError):
         this_part = 'in this item' if this_item is None else f'in item "{this_item}"'
         return f"{child_part} {this_part}"
 
+class ToCPathError(Exception):
+    ...
+
 class EntryType(IntEnum):
     """
     Type of an entry in the table of contents
@@ -80,6 +83,15 @@ class ChildContainer:
     def streams(self) -> CaseInsensitiveDictView[Stream]:
         """View containing only streams of this entry"""
         return self.children.select(lambda _, v: v.entry_type == EntryType.Stream)
+
+    def path(self, path: str) -> Entry:
+        splits = path.split('/', 1)
+        selected_entry = self[splits[0]]
+        if len(splits) == 1:
+            return selected_entry
+        elif isinstance(selected_entry, ChildContainer):
+            return selected_entry.path(splits[1])
+        raise ToCPathError(f"Cannot resolve path '{path}', as '{selected_entry.name}' does not have any children")
 
     def __getitem__(self, item: str) -> Entry:
         if not self.__contains__(item):
