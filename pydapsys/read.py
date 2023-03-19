@@ -6,6 +6,12 @@ from pydapsys.toc.entry import Entry, EntryType, Folder, Root, StreamType, Strea
 from pydapsys.toc.plot import PlotConfig, PlotType, LatencyPlotUnit, PointStyle, RGBA8
 from pydapsys.util.structs import CaseInsensitiveDict
 
+class BinaryElementTypeError(Exception):
+    ...
+class UnknownEntryTypeError(BinaryElementTypeError):
+    ...
+class UnknownPageTypeError(BinaryElementTypeError):
+    ...
 
 def _read_plot_config(file: DapsysBinaryReader) -> PlotConfig:
     """
@@ -49,7 +55,7 @@ def _read_toc_entry(file: DapsysBinaryReader) -> Entry:
         return Stream(id=id, name=name, stream_type=stream_type, open_at_start=open_at_start, plot_config=plot_config,
                       page_ids=page_ids)
     else:
-        raise Exception(f"Unhandled entry type {type}")
+        raise UnknownEntryTypeError(f"Unhandled entry type {type}")
 
 
 def _read_toc(file: DapsysBinaryReader) -> Root:
@@ -89,7 +95,7 @@ def _read_page(file: DapsysBinaryReader) -> DataPage:
         return WaveformPage(type=type, id=id, reference_id=ref, values=values, timestamps=timestamps,
                             interval=tail)
     else:
-        raise Exception(f"Unhandled page type {type}")
+        raise UnknownPageTypeError(f"Unhandled page type {type}")
 
 def read_from(binio: BinaryIO, byte_order='<') -> Tuple[Root, Dict[int, DataPage]]:
     dapsys_io = DapsysBinaryReader(binio, byte_order=byte_order)
