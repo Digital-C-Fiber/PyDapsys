@@ -37,7 +37,7 @@ class DapsysToNeoConverter(ABC):
         """
         page = self.file.pages[pid]
         if page.type != ptype:
-            raise Exception(f"page {pid} is not of type {ptype.Text}, but {page.type.Text}")
+            raise Exception(f"page {pid} is not of type {ptype.name}, but {page.type.name}")
         return page
 
     def get_textpage(self, pid: int) -> TextPage:
