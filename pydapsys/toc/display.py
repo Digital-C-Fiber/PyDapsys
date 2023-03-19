@@ -42,7 +42,7 @@ class RGBA8(object):
 
 
 @dataclass
-class PlotConfig(object):
+class DisplayProperties(object):
     """Configuration of a stream plot"""
     plot_type: PlotType
     histogram_interval: float

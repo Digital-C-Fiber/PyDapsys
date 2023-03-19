@@ -3,7 +3,7 @@ from typing import BinaryIO, Tuple, Dict
 from pydapsys.page import DataPage, PageType, TextPage, WaveformPage
 from pydapsys.binaryreader import DapsysBinaryReader
 from pydapsys.toc.entry import Entry, EntryType, Folder, Root, StreamType, Stream
-from pydapsys.toc.plot import PlotConfig, PlotType, LatencyPlotUnit, PointStyle, RGBA8
+from pydapsys.toc.display import DisplayProperties, PlotType, LatencyPlotUnit, PointStyle, RGBA8
 from pydapsys.util.structs import CaseInsensitiveDict
 
 class BinaryElementTypeError(Exception):
@@ -13,9 +13,9 @@ class UnknownEntryTypeError(BinaryElementTypeError):
 class UnknownPageTypeError(BinaryElementTypeError):
     ...
 
-def _read_plot_config(file: DapsysBinaryReader) -> PlotConfig:
+def _read_display_properties(file: DapsysBinaryReader) -> DisplayProperties:
     """
-    Reads a plot configuration from a binary file
+    Reads a block of display properties from a binary file
     :param file: Opened binary file to read from
     :return: The read plot config object
     """
@@ -27,9 +27,9 @@ def _read_plot_config(file: DapsysBinaryReader) -> PlotConfig:
     point_style = PointStyle(file.read_u32())
     r, g, b, a = file.read_ubytes(4)
     hist_begin = file.read_f64()
-    return PlotConfig(plot_type, hist_interval, latency_unit, latency_reference, recording_unit, point_style,
-                      RGBA8(r=r, g=g, b=b, a=a),
-                      hist_begin)
+    return DisplayProperties(plot_type, hist_interval, latency_unit, latency_reference, recording_unit, point_style,
+                             RGBA8(r=r, g=g, b=b, a=a),
+                             hist_begin)
 
 
 def _read_toc_entry(file: DapsysBinaryReader) -> Entry:
@@ -49,10 +49,10 @@ def _read_toc_entry(file: DapsysBinaryReader) -> Entry:
         return Folder(id=id, name=name, children=CaseInsensitiveDict.from_dict(children))
     elif type == EntryType.Stream:
         stream_type = StreamType(file.read_u32())
-        plot_config = _read_plot_config(file)
+        display_properties = _read_display_properties(file)
         open_at_start = file.read_bool()
         page_ids = file.read_u32_nparray()
-        return Stream(id=id, name=name, stream_type=stream_type, open_at_start=open_at_start, plot_config=plot_config,
+        return Stream(id=id, name=name, stream_type=stream_type, open_at_start=open_at_start, display_properties=display_properties,
                       page_ids=page_ids)
     else:
         raise UnknownEntryTypeError(f"Unhandled entry type {type}")

@@ -9,7 +9,7 @@ import numpy as np
 import numpy.typing as npt
 
 from pydapsys.toc.exceptions import ToCEntryError
-from pydapsys.toc.plot import PlotConfig
+from pydapsys.toc.display import DisplayProperties
 from pydapsys.util.structs import CaseInsensitiveDict, CaseInsensitiveDictView
 
 
@@ -142,8 +142,8 @@ class Stream(Entry):
     """Indicates if Dapsys should open this stream at start"""
     page_ids: npt.NDArray[np.uint32]
     """Pages belonging to this tream"""
-    plot_config: PlotConfig
-    """Plot configuration of this stream"""
+    display_properties: DisplayProperties
+    """Display properties of this stream"""
 
     @property
     def entry_type(self) -> EntryType:
