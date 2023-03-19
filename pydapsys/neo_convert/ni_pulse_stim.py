@@ -44,11 +44,11 @@ class NIPulseStimulatorToNeo(DapsysToNeoConverter):
         Looks in :attr:`self.file` for a folder with one of the keys of :attr:`self.stim_folder_names` and returns the first match
         :return:The folder object of the stimulator
         """
-        candidates = self.file.toc_root.folders
+        candidates = self.file.toc.folders
         for stim_name in self.stim_foler_names:
             if stim_name in candidates:
                 return candidates[stim_name]
-        raise Exception(f"Could not find a fitting stimulator name: {self.file.toc_root.children.keys()}")
+        raise Exception(f"Could not find a fitting stimulator name: {self.file.toc.children.keys()}")
 
     @property
     def comment_stream(self) -> Stream:
@@ -56,7 +56,7 @@ class NIPulseStimulatorToNeo(DapsysToNeoConverter):
         Returns the stream containing the comments of the recording (root/comments)
         :return: Comment stream
         """
-        return self.file.toc_root.s["comments"]
+        return self.file.toc.s["comments"]
 
     @property
     def track_textstreams(self) -> Iterable[Stream]:
