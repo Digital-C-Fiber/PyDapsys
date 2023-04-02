@@ -1,17 +1,23 @@
 from typing import BinaryIO, Tuple, Dict
 
-from pydapsys.page import DataPage, PageType, TextPage, WaveformPage
 from pydapsys.binaryreader import DapsysBinaryReader
-from pydapsys.toc.entry import Entry, EntryType, Folder, Root, StreamType, Stream
+from pydapsys.page import DataPage, PageType, TextPage, WaveformPage
 from pydapsys.toc.display import DisplayProperties, PlotType, LatencyPlotUnit, PointStyle, RGBA8
+from pydapsys.toc.entry import Entry, EntryType, Folder, Root, StreamType, Stream
 from pydapsys.util.structs import CaseInsensitiveDict
+
 
 class BinaryElementTypeError(Exception):
     ...
+
+
 class UnknownEntryTypeError(BinaryElementTypeError):
     ...
+
+
 class UnknownPageTypeError(BinaryElementTypeError):
     ...
+
 
 def _read_display_properties(file: DapsysBinaryReader) -> DisplayProperties:
     """
@@ -52,7 +58,8 @@ def _read_toc_entry(file: DapsysBinaryReader) -> Entry:
         display_properties = _read_display_properties(file)
         open_at_start = file.read_bool()
         page_ids = file.read_u32_nparray()
-        return Stream(id=id, name=name, stream_type=stream_type, open_at_start=open_at_start, display_properties=display_properties,
+        return Stream(id=id, name=name, stream_type=stream_type, open_at_start=open_at_start,
+                      display_properties=display_properties,
                       page_ids=page_ids)
     else:
         raise UnknownEntryTypeError(f"Unhandled entry type {type}")
@@ -97,6 +104,7 @@ def _read_page(file: DapsysBinaryReader) -> DataPage:
     else:
         raise UnknownPageTypeError(f"Unhandled page type {type}")
 
+
 def read_from(binio: BinaryIO, byte_order='<') -> Tuple[Root, Dict[int, DataPage]]:
     dapsys_io = DapsysBinaryReader(binio, byte_order=byte_order)
     dapsys_io.skip(0x30)
@@ -104,4 +112,3 @@ def read_from(binio: BinaryIO, byte_order='<') -> Tuple[Root, Dict[int, DataPage
     pages = {page.id: page for page in (_read_page(dapsys_io) for _ in range(page_count))}
     root = _read_toc(dapsys_io)
     return root, pages
-

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Mapping, Sequence, Union, Optional, Iterable, List, Dict
+from typing import Sequence, Union, Optional, Iterable, List, Dict
 
 import neo
 import numpy as np
@@ -8,7 +8,7 @@ import quantities as pq
 
 from pydapsys.file import File
 from pydapsys.page import DataPage, WaveformPage, TextPage, PageType
-from pydapsys.toc.entry import Root, Stream, StreamType
+from pydapsys.toc.entry import Stream, StreamType
 from pydapsys.util.floats import float_comp
 
 

@@ -8,10 +8,9 @@ from typing import Optional
 import numpy as np
 import numpy.typing as npt
 
-from pydapsys.toc.exceptions import ToCEntryError
 from pydapsys.toc.display import DisplayProperties
+from pydapsys.toc.exceptions import ToCEntryError
 from pydapsys.util.structs import CaseInsensitiveDict, CaseInsensitiveDictView
-
 
 
 class ToCNoSuchChildError(ToCEntryError):
@@ -28,8 +27,10 @@ class ToCNoSuchChildError(ToCEntryError):
         this_part = 'in this item' if this_item is None else f'in item "{this_item}"'
         return f"{child_part} {this_part}"
 
+
 class ToCPathError(Exception):
     ...
+
 
 class EntryType(IntEnum):
     """
