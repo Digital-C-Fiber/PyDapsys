@@ -35,6 +35,7 @@ class PlotType(IntEnum):
 
 @dataclass
 class RGBA8(object):
+    """R(ed)G(reen)(B)lue(A)lpha color"""
     r: int
     g: int
     b: int

@@ -87,12 +87,17 @@ class ChildContainer:
 
     @property
     def structure(self) -> Dict:
+        """Returns a dictionary with subdictionaries and strings describing the structure of this objects children"""
         d = dict()
         for v in self.children.values():
             d[v.name] = v.structure if isinstance(v, ChildContainer) else f"{v.stream_type.name};{len(v.page_ids)}"
         return d
 
     def path(self, path: str) -> Entry:
+        """Returns the Entry from the given relative path.
+        :param path: Relative path to the target entry
+        :returns: the target entry
+        """
         splits = path.split('/', 1)
         selected_entry = self[splits[0]]
         if len(splits) == 1:

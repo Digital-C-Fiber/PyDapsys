@@ -106,6 +106,11 @@ def _read_page(file: DapsysBinaryReader) -> DataPage:
 
 
 def read_from(binio: BinaryIO, byte_order='<') -> Tuple[Root, Dict[int, DataPage]]:
+    """Reads a DAPSYS file from a readable binaryio object
+    :param binio:  binary io to read from
+    :param byte_order: Byte order to use when reading
+    :returns: A tuple containing the Root of the table of contents and a dictionary mapping the page ids to their respective pages
+    """
     dapsys_io = DapsysBinaryReader(binio, byte_order=byte_order)
     dapsys_io.skip(0x30)
     page_count = dapsys_io.read_u32()
