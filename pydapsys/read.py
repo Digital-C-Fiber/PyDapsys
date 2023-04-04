@@ -44,25 +44,25 @@ def _read_toc_entry(file: DapsysBinaryReader) -> Entry:
     :param file: Opened binary file to read from
     :return: The entry, populated with its children (if any)
     """
-    type = EntryType(file.read_u32())
+    entry_type = EntryType(file.read_u32())
     name = file.read_str()
     file.skip_32()
-    id = file.read_u32()
-    if type == EntryType.Folder:
+    entry_id = file.read_u32()
+    if entry_type == EntryType.Folder:
         child_count = file.read_u32()
         children = {entry.name: entry for entry in
                     (_read_toc_entry(file) for _ in range(child_count))}
-        return Folder(id=id, name=name, children=CaseInsensitiveDict.from_dict(children))
-    elif type == EntryType.Stream:
+        return Folder(id=entry_id, name=name, children=CaseInsensitiveDict.from_dict(children))
+    elif entry_type == EntryType.Stream:
         stream_type = StreamType(file.read_u32())
         display_properties = _read_display_properties(file)
         open_at_start = file.read_bool()
         page_ids = file.read_u32_nparray()
-        return Stream(id=id, name=name, stream_type=stream_type, open_at_start=open_at_start,
+        return Stream(id=entry_id, name=name, stream_type=stream_type, open_at_start=open_at_start,
                       display_properties=display_properties,
                       page_ids=page_ids)
     else:
-        raise UnknownEntryTypeError(f"Unhandled entry type {type}")
+        raise UnknownEntryTypeError(f"Unhandled entry type {entry_type}")
 
 
 def _read_toc(file: DapsysBinaryReader) -> Root:
@@ -86,23 +86,23 @@ def _read_page(file: DapsysBinaryReader) -> DataPage:
     :param file: Opened binary file to read from
     :return: A DataPage, either a TextPage or a RecordingPage, depending on the read page type
     """
-    type = PageType(file.read_u32())
-    id = file.read_u32()
+    page_type = PageType(file.read_u32())
+    page_id = file.read_u32()
     ref = file.read_u32(check_null=True)
-    if type == PageType.Text:
+    if page_type == PageType.Text:
         comment = file.read_str()
         ts_a = file.read_f64()
         ts_b = file.read_f64(check_null=True)
-        return TextPage(type=type, id=id, reference_id=ref, text=comment, timestamp_a=ts_a, timestamp_b=ts_b)
-    elif type == PageType.Waveform:
+        return TextPage(type=page_type, id=page_id, reference_id=ref, text=comment, timestamp_a=ts_a, timestamp_b=ts_b)
+    elif page_type == PageType.Waveform:
         values = file.read_f32_nparray()
         timestamps = file.read_f64_nparray()
         tail = file.read_f64(check_null=True)
         file.skip_64(count=3)
-        return WaveformPage(type=type, id=id, reference_id=ref, values=values, timestamps=timestamps,
+        return WaveformPage(type=page_type, id=page_id, reference_id=ref, values=values, timestamps=timestamps,
                             interval=tail)
     else:
-        raise UnknownPageTypeError(f"Unhandled page type {type}")
+        raise UnknownPageTypeError(f"Unhandled page type {page_type}")
 
 
 def read_from(binio: BinaryIO, byte_order='<') -> Tuple[Root, Dict[int, DataPage]]:

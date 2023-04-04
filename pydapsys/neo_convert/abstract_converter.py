@@ -149,7 +149,7 @@ class DapsysToNeoConverter(ABC):
         page_iter = iter(rec_pages)
         current_set: List[WaveformPage] = [next(page_iter)]
         for page in page_iter:
-            if not (float_comp(current_set[-1].interval, page.interval) and \
+            if not (float_comp(current_set[-1].interval, page.interval) and
                     not float_comp(current_set[-1].last_timestamp + current_set[-1].interval,
                                    page.timestamps[0], epsilon=tolerance)):
                 current_set.append(page)
