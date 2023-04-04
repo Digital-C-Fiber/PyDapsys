@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import Optional
+from typing import Optional, Dict
 
 import numpy as np
 import numpy.typing as npt
