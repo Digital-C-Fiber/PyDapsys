@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pydapsys"
-version = "0.1.2"
+version = "1.0b1"
 description = "Read recordings made with DAPSYS"
 authors = ["Peter Konradi <codingchipmunk@posteo.net>"]
 readme = "README.md"
