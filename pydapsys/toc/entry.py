@@ -3,33 +3,14 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import Optional, Dict
+from typing import Dict
 
 import numpy as np
 import numpy.typing as npt
 
 from pydapsys.toc.display import DisplayProperties
-from pydapsys.toc.exceptions import ToCEntryError
+from pydapsys.toc.exceptions import ToCNoSuchChildError, ToCPathError
 from pydapsys.util.structs import CaseInsensitiveDict, CaseInsensitiveDictView
-
-
-class ToCNoSuchChildError(ToCEntryError):
-    def __init__(self, message: Optional[str] = None, this_item: Optional[str] = None,
-                 missing_item: Optional[str] = None):
-        super().__init__(
-            message if message is not None else self.default_message(this_item=this_item, missing_item=missing_item))
-        self.this_item = this_item
-        self.missing_item = missing_item
-
-    @staticmethod
-    def default_message(this_item: Optional[str] = None, missing_item: Optional[str] = None) -> str:
-        child_part = 'No such child' if missing_item is None else f'No child named "{missing_item}"'
-        this_part = 'in this item' if this_item is None else f'in item "{this_item}"'
-        return f"{child_part} {this_part}"
-
-
-class ToCPathError(Exception):
-    ...
 
 
 class EntryType(IntEnum):
