@@ -19,3 +19,7 @@ try:
     import neo
 except ImportError as e:
     raise ExtraDependencyNotFoundError("Neo", "neo", extra_name="neo") from e
+
+from helper import DapsysToNeoHelper
+from interface import INeoConverter
+from ni_pulse_stim import NIPulseStimRecordingConverter

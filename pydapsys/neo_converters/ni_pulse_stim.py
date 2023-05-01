@@ -4,8 +4,8 @@ from typing import Optional, Iterable
 import neo
 
 from pydapsys.file import File
-from pydapsys.neo_convert.helper import DapsysToNeoHelper
-from pydapsys.neo_convert.interface import INeoConverter
+from pydapsys.neo_converters.helper import DapsysToNeoHelper
+from pydapsys.neo_converters.interface import INeoConverter
 from pydapsys.toc.entry import Folder, Stream, StreamType
 
 

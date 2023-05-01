@@ -4,7 +4,7 @@
 
 PyDapsys is a package to read neurography recordings made with [DAPSYS](http://dapsys.net/) (Data Acquisition Processor System). It is based on a reverse-engineered specification of the binary data format used by the latest DAPSYS version.
 
-Optionally, the library provides functionality to store loaded data into [Neo](https://github.com/NeuralEnsemble/python-neo) datastrucutres, from where they can be exported into various other formats.
+Optionally, the library provides functionality to store loaded data into [Neo](https://github.com/NeuralEnsemble/python-neo) datastructures, from where they can be exported into various other formats.
 
 ## Installation
 
@@ -35,11 +35,11 @@ A DAPSYS file is made up of two parts: A sequential list of blocks or **pages**,
 #### Load a file
 Use `File.from_binary` to read from a BinaryIO object.
 ```python
-from pydapsys.file import File
+from pydapsys import read_file
 from pathlib import Path
 MY_DAPSYS_FILE = Path(".")/"to"/"my"/"dapsys_file.dps"
 with open(MY_DAPSYS_FILE, 'rb') as file:
-    file = File.from_binary(file)
+    file = read_file(file)
 ```
 The `File` object has two fields, the root of the table of contents and a dictionary mapping the page ids to their respective pages.
 ##### Inspect file structure
@@ -53,7 +53,7 @@ This will print the structure, names and types of all elements in the table of c
 To access data, use the `File.get_data` method. The method takes a path from the toc structure (WITHOUT THE NAME OF THE ROOT!) and will return all associated pages.
 Please note, that the path is  case insensitive
 ```python
-from pydapsys.toc.entry import StreamType
+from pydapsys.toc import StreamType
 my_texts = list(file.get_data("myrecording/my text stream", stype=StreamType.Text))
 my_waveforms = list(file.get_data("myrecording/somewhere else/ my waveform stream", stype=StreamType.Waveform))
 ```
@@ -95,7 +95,7 @@ Converter class for Dapsys recording created using an NI Pulse stimulator. Puts 
 Waveform pages of the continuous recording are merged if the difference between a pair of consecutive pages is less than a specified threshold (`grouping_tolerance`).
 
 ```python
-from pydapsys.neo_convert import NIPulseStimRecordingConverter
+from pydapsys.neo_converters import NIPulseStimRecordingConverter
 
 # convert a recording to a neo block
 neo_block = NIPulseStimRecordingConverter(file, grouping_tolerance=1e-9).to_neo()
