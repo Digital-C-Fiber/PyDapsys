@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "pydapsys"
 version = "1.0b1"
+version = "0.2.0"
 description = "Read recordings made with DAPSYS"
 authors = ["Peter Konradi <codingchipmunk@posteo.net>"]
 readme = "README.md"
@@ -8,10 +9,10 @@ license = "BSD-3-Clause"
 repository = "https://github.com/Digital-C-Fiber/PyDapsys"
 keywords = ["microneurography", "dapsys", "neurophysiology", "electrophysiology"]
 classifiers = ["Development Status :: 4 - Beta",
-    "Intended Audience :: Developers","Intended Audience :: Science/Research",
+    "Intended Audience :: Developers", "Intended Audience :: Science/Research",
     "Intended Audience :: Healthcare Industry",
     "Programming Language :: Python :: 3 :: Only",
-    ]
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
