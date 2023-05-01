@@ -67,3 +67,12 @@ class File:
         """
         toc_root, pages = read_from(binio, byte_order=byte_order)
         return File(toc_root, pages)
+
+
+def read_file(binio: BinaryIO, byte_order='<') -> File:
+    """Reads a DAPSYS file from the given binary io object and directly constructs a new File class from it.
+    :param binio: BinaryIO object to read from
+    :param byte_order: byte order to use when reading from the binary io object. Defaults to little endian.
+    :return: The File object constructed from the contents of the io stream
+    """
+    return File.from_binary(binio, byte_order=byte_order)
