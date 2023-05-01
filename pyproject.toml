@@ -16,10 +16,11 @@ classifiers = ["Development Status :: 4 - Beta",
 [tool.poetry.dependencies]
 python = "^3.8"
 numpy = "^1.21"
-neo = { version = "^0.11.1", optional = true }
+neo = { version = ">=0.12, <1", optional = true }
 
 [tool.poetry.extras]
 neo = ["neo"]
+
 
 [build-system]
 requires = ["poetry-core"]
