@@ -157,3 +157,7 @@ cython_debug/
 .idea/
 .vscode/
 .history/
+
+# keep toolchain-specific files out of my repo pls
+.python-version
+.tool-versions

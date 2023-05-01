@@ -3,11 +3,13 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import IntEnum
+from typing import Dict
 
 import numpy as np
 import numpy.typing as npt
 
-from pydapsys.toc.plot import PlotConfig
+from pydapsys.toc.display import DisplayProperties
+from pydapsys.toc.exceptions import ToCNoSuchChildError, ToCPathError
 from pydapsys.util.structs import CaseInsensitiveDict, CaseInsensitiveDictView
 
 
@@ -64,7 +66,30 @@ class ChildContainer:
         """View containing only streams of this entry"""
         return self.children.select(lambda _, v: v.entry_type == EntryType.Stream)
 
+    @property
+    def structure(self) -> Dict:
+        """Returns a dictionary with subdictionaries and strings describing the structure of this objects children"""
+        d = dict()
+        for v in self.children.values():
+            d[v.name] = v.structure if isinstance(v, ChildContainer) else f"{v.stream_type.name};{len(v.page_ids)}"
+        return d
+
+    def path(self, path: str) -> Entry:
+        """Returns the Entry from the given relative path.
+        :param path: Relative path to the target entry
+        :returns: the target entry
+        """
+        splits = path.split('/', 1)
+        selected_entry = self[splits[0]]
+        if len(splits) == 1:
+            return selected_entry
+        elif isinstance(selected_entry, ChildContainer):
+            return selected_entry.path(splits[1])
+        raise ToCPathError(f"Cannot resolve path '{path}', as '{selected_entry.name}' does not have any children")
+
     def __getitem__(self, item: str) -> Entry:
+        if not self.__contains__(item):
+            raise ToCNoSuchChildError(missing_item=item)
         return self.children[item]
 
     def __contains__(self, item: str) -> bool:
@@ -111,8 +136,8 @@ class Stream(Entry):
     """Indicates if Dapsys should open this stream at start"""
     page_ids: npt.NDArray[np.uint32]
     """Pages belonging to this tream"""
-    plot_config: PlotConfig
-    """Plot configuration of this stream"""
+    display_properties: DisplayProperties
+    """Display properties of this stream"""
 
     @property
     def entry_type(self) -> EntryType:

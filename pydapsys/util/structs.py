@@ -62,7 +62,6 @@ class CaseInsensitiveDict(MutableMapping[str, _VT], Generic[_VT]):
         return CaseInsensitiveDictView(self, {k for k, v in self.items() if selector(k, v)})
 
 
-
 class CaseInsensitiveDictView(MutableMapping[str, _VT], Generic[_VT]):
     """
     Provides view capabilities for :class:`pydapsys.util.structs.CaseInsensitiveDict`

@@ -35,6 +35,7 @@ class PlotType(IntEnum):
 
 @dataclass
 class RGBA8(object):
+    """R(ed)G(reen)(B)lue(A)lpha color"""
     r: int
     g: int
     b: int
@@ -42,7 +43,7 @@ class RGBA8(object):
 
 
 @dataclass
-class PlotConfig(object):
+class DisplayProperties(object):
     """Configuration of a stream plot"""
     plot_type: PlotType
     histogram_interval: float

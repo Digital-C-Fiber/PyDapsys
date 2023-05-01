@@ -1,14 +1,15 @@
 from datetime import datetime
-from typing import Mapping, Optional, Iterable
+from typing import Optional, Iterable
 
 import neo
 
-from pydapsys.neo_convert.abstract_converter import DapsysToNeoConverter
-from pydapsys.page import DataPage
-from pydapsys.toc.entry import Root, Folder, Stream, StreamType
+from pydapsys.file import File
+from pydapsys.neo_converters.helper import DapsysToNeoHelper
+from pydapsys.neo_converters.interface import INeoConverter
+from pydapsys.toc.entry import Folder, Stream, StreamType
 
 
-class NIPulseStimulatorToNeo(DapsysToNeoConverter):
+class NIPulseStimRecordingConverter(DapsysToNeoHelper, INeoConverter):
     """Converter class for Dapsys recording created using an NI Pulse stimulator. Puts everything into one neo sequence.
     Waveform pages of continuous recording are merged if the difference between a pair of consecutive pages is less than a specified threshold.
 
@@ -24,19 +25,16 @@ class NIPulseStimulatorToNeo(DapsysToNeoConverter):
                 - Tracks for All Responses -> Optional. If it doesn't exist, there simply will be no spike trains
                     - ...Track text streams... -> Will be converted into one spike train each
 
-    :param toc: Root of the table of contents
-    :type toc: class:`pydapsys.toc.entry.Root`
-    :param pages: Mapping between the id of the data page and itself
-    :type toc: class:`typing.Mapping[int, pydapsys.page.DataPage]`
+    :param file: PyDapsys file object
     :param grouping_tolerance: Maximum delta (in seconds) between two consecutive pages to group them together, defaults to 1e-9
     :type grouping_tolerance: float
     """
     stim_foler_names = ["NI Puls Stimulator", "pulse stimulator", "NI Pulse stimulator"]
     """valid stimulator names for this converter"""
 
-    def __init__(self, toc: Root, pages: Mapping[int, DataPage], grouping_tolerance=1e-9):
+    def __init__(self, file: File, grouping_tolerance=1e-9):
         """constructor method"""
-        super().__init__(toc, pages)
+        super().__init__(file)
         self.grouping_tolerance = grouping_tolerance
 
     @property
@@ -44,14 +42,14 @@ class NIPulseStimulatorToNeo(DapsysToNeoConverter):
         """
         Returns the folder of the stimulator.
 
-        Looks in :attr:`self.toc` for a folder with one of the keys of :attr:`self.stim_folder_names` and returns the first match
+        Looks in :attr:`self.file` for a folder with one of the keys of :attr:`self.stim_folder_names` and returns the first match
         :return:The folder object of the stimulator
         """
-        candidates = self.toc.folders
+        candidates = self.file.toc.folders
         for stim_name in self.stim_foler_names:
             if stim_name in candidates:
                 return candidates[stim_name]
-        raise Exception(f"Could not find a fitting stimulator name: {self.toc.children.keys()}")
+        raise Exception(f"Could not find a fitting stimulator name: {self.file.toc.children.keys()}")
 
     @property
     def comment_stream(self) -> Stream:
@@ -59,7 +57,7 @@ class NIPulseStimulatorToNeo(DapsysToNeoConverter):
         Returns the stream containing the comments of the recording (root/comments)
         :return: Comment stream
         """
-        return self.toc.s["comments"]
+        return self.file.toc.s["comments"]
 
     @property
     def track_textstreams(self) -> Iterable[Stream]:

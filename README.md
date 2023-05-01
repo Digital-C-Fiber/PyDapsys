@@ -4,7 +4,7 @@
 
 PyDapsys is a package to read neurography recordings made with [DAPSYS](http://dapsys.net/) (Data Acquisition Processor System). It is based on a reverse-engineered specification of the binary data format used by the latest DAPSYS version.
 
-Optionally, the library provides functionality to store loaded data into [Neo](https://github.com/NeuralEnsemble/python-neo) datastrucutres, from where they can be exported into various other formats.
+Optionally, the library provides functionality to store loaded data into [Neo](https://github.com/NeuralEnsemble/python-neo) datastructures, from where they can be exported into various other formats.
 
 ## Installation
 
@@ -28,57 +28,35 @@ Install base library with additional dependencies required to load data into Neo
 
 ## Usage
 
-### Basics
+### Quickstart
 
-A Dapsys file is made up of two parts: A sequential list of blocks or **pages**, which store either a text with a timestamp or a waveform with associated timestamps, and a table of contents (toc). The toc consists of **folders** and **streams**. Each page has an id unique in the context of the file. Streams in the toc have an array of ids of the pages belonging to the stream. A stream is either a text stream (referring only to text pages) or a data stream (referring only to recording pages).
+A DAPSYS file is made up of two parts: A sequential list of blocks or **pages**, which store either a text with a timestamp or a waveform with associated timestamps, and a table of contents (toc). The toc consists of **folders** and **streams**. Each page has an id unique in the context of the file. Streams in the toc have an array of ids of the pages belonging to the stream. A stream is either a text stream (referring only to text pages) or a data stream (referring only to recording pages).
 
 #### Load a file
-
-Use `read_file` to get the root of the table of contents and a dictionary which maps from the page ids to the object representing the page itself.
-
+Use `File.from_binary` to read from a BinaryIO object.
 ```python
-from pydapsys.read import read_file
+from pydapsys import read_file
 from pathlib import Path
 MY_DAPSYS_FILE = Path(".")/"to"/"my"/"dapsys_file.dps"
-toc_root, pages = read_file(MY_DAPSYS_FILE)
+with open(MY_DAPSYS_FILE, 'rb') as file:
+    file = read_file(file)
 ```
-
-The `toc_root` object will have children, either folders (which, in turn, can have additional children) or streams. You can access the childrens by using the index-operator. Access to children is case-insensitive. This is done for conveniance and does not inlfuence the correctness, as DAPSYS itself does not allow two objects of the same (case insensitive) name to exist on the same hierachy level. For typed access you can use either `.f` to get folders or `.s` to only get streams:
-
+The `File` object has two fields, the root of the table of contents and a dictionary mapping the page ids to their respective pages.
+##### Inspect file structure
+To inspect the ToC structure of a loaded file, use the `structure` property of the toc `Root`, preferable together with `pprint`:
 ```python
-comment_stream = toc_root["comments"] # Will return the stream Comments, but is typed as generic stream
-comment_stream = toc_root.s["coMMents"] # Will return the stream Comments, typed as Stream
-top_folder = toc_root.f["Folder"] # will return the folder Folder
-top_folder = toc_root.f["comments"] # will fail (exception), because comments is not a folder
-
-# iterate over all folders:
-for folder in toc_root.f.values():
-    ...
-
-# iterate over all streams:
-for stream in toc_root.s.values():
-    ...
+import pprint
+pprint.PrettyPrinter(indent=4).pprint(file.toc.structure)
 ```
-
+This will print the structure, names and types of all elements in the table of contents. For Streams, the number of associated pages it also printed after their type.
 #### Access data from a file
-
-To get text data from a file, get the datastream object from the toc and access  its  `page_ids` property. For conveniance, the `__getitem__`, `__iter__` and `__contains__` methods of stream objects have been overloaded to return the result of the same operation on `page_ids`. From there, you can get the corresponding pages from the `pages` dict:
-
+To access data, use the `File.get_data` method. The method takes a path from the toc structure (WITHOUT THE NAME OF THE ROOT!) and will return all associated pages.
+Please note, that the path is  case insensitive
 ```python
-from pydapsys.toc.entry import StreamType
-
-def get_pages(stream, expected_stream_type: StreamType):
-    if stream.stream_type != expected_stream_type:
-        raise Exception(f"{stream.name} is not a {expected_stream_type.name} stream, but {stream.stream_type.name}")
-    return [pages[page_id] for page_id in stream] # or [pages[page_id] for page_id in stream.page_ids]
-
-text_stream = ...
-text_pages = get_pages(text_stream, StreamType.Text)
-
-waveform_stream = ...
-waveform_pages = get_pages(waveform_stream, StreamType.Waveform)
+from pydapsys.toc import StreamType
+my_texts = list(file.get_data("myrecording/my text stream", stype=StreamType.Text))
+my_waveforms = list(file.get_data("myrecording/somewhere else/ my waveform stream", stype=StreamType.Waveform))
 ```
-
 ##### Text pages
 
 A text page consists of three fields:
@@ -117,10 +95,10 @@ Converter class for Dapsys recording created using an NI Pulse stimulator. Puts 
 Waveform pages of the continuous recording are merged if the difference between a pair of consecutive pages is less than a specified threshold (`grouping_tolerance`).
 
 ```python
-from pydapsys.neo_convert.ni_pulse_stim import NIPulseStimulatorToNeo
+from pydapsys.neo_converters import NIPulseStimRecordingConverter
 
 # convert a recording to a neo block
-neo_block = NIPulseStimulatorToNeo(toc_root, pages, grouping_tolerance=1e-9).to_neo()
+neo_block = NIPulseStimRecordingConverter(file, grouping_tolerance=1e-9).to_neo()
 ```
 
 #### Expected file structure
