@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 from typing import Sequence, Union, Optional, Iterable, List, Dict
 
 import neo
@@ -12,23 +11,15 @@ from pydapsys.toc.entry import Stream, StreamType
 from pydapsys.util.floats import float_comp
 
 
-class DapsysToNeoConverter(ABC):
-    """ Converter to put Dapsys recordings into the neo structure
+class DapsysToNeoHelper:
+    """ Converter to put various Dapsys streams neo structures
 
-    This abstract base class provides common functionalities to transform Dapsys streams into common neo structures
+
     :param file: PyDapsys dapsys file
     """
 
     def __init__(self, file: File):
         self.file = file
-
-    @abstractmethod
-    def to_neo(self) -> neo.Block:
-        """
-        Create a neo structure based on the given recording
-        :return: A neo block containing the data from the recording
-        """
-        ...
 
     def _get_datapage_typechecked(self, pid: int, ptype: PageType) -> DataPage:
         """

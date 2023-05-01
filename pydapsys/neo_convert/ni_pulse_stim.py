@@ -4,11 +4,12 @@ from typing import Optional, Iterable
 import neo
 
 from pydapsys.file import File
-from pydapsys.neo_convert.abstract_converter import DapsysToNeoConverter
+from pydapsys.neo_convert.helper import DapsysToNeoHelper
+from pydapsys.neo_convert.interface import INeoConverter
 from pydapsys.toc.entry import Folder, Stream, StreamType
 
 
-class NIPulseStimulatorToNeo(DapsysToNeoConverter):
+class NIPulseStimRecordingConverter(DapsysToNeoHelper, INeoConverter):
     """Converter class for Dapsys recording created using an NI Pulse stimulator. Puts everything into one neo sequence.
     Waveform pages of continuous recording are merged if the difference between a pair of consecutive pages is less than a specified threshold.
 

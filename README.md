@@ -95,10 +95,10 @@ Converter class for Dapsys recording created using an NI Pulse stimulator. Puts 
 Waveform pages of the continuous recording are merged if the difference between a pair of consecutive pages is less than a specified threshold (`grouping_tolerance`).
 
 ```python
-from pydapsys.neo_convert.ni_pulse_stim import NIPulseStimulatorToNeo
+from pydapsys.neo_convert import NIPulseStimRecordingConverter
 
 # convert a recording to a neo block
-neo_block = NIPulseStimulatorToNeo(file, grouping_tolerance=1e-9).to_neo()
+neo_block = NIPulseStimRecordingConverter(file, grouping_tolerance=1e-9).to_neo()
 ```
 
 #### Expected file structure
