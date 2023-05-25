@@ -43,6 +43,7 @@ class NIPulseStimRecordingConverter(DapsysToNeoHelper, INeoConverter):
         Returns the folder of the stimulator.
 
         Looks in :attr:`self.file` for a folder with one of the keys of :attr:`self.stim_folder_names` and returns the first match
+
         :return:The folder object of the stimulator
         """
         candidates = self.file.toc.folders
@@ -55,6 +56,7 @@ class NIPulseStimRecordingConverter(DapsysToNeoHelper, INeoConverter):
     def comment_stream(self) -> Stream:
         """
         Returns the stream containing the comments of the recording (root/comments)
+
         :return: Comment stream
         """
         return self.file.toc.s["comments"]
@@ -66,6 +68,7 @@ class NIPulseStimRecordingConverter(DapsysToNeoHelper, INeoConverter):
 
         Looks in root/[stimulator]/responses/tracks for all responses/ for any streams and returns them.
         root/[stimulator]/responses must exist, the function will silently ignore missing "tracks for all responses".
+
         :return: Streams containing sorted tracks
         """
         if "tracks for all responses" in self.stimulator_folder.f["responses"].folders:
@@ -77,6 +80,7 @@ class NIPulseStimRecordingConverter(DapsysToNeoHelper, INeoConverter):
                file_datetime: Optional[datetime] = None, rec_datetime: Optional[datetime] = None) -> neo.Block:
         """
         Attemps to read the data of the recording into a neo structure.
+        
         :param block_name: Name of the neo Block that will be returned
         :param segment_name: Name of the sole sequence contained in the block
         :param file_datetime: File datetime to set on the neo block and sequence. If none, will be set to unix-epoch 0

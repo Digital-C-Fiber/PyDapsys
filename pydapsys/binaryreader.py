@@ -24,6 +24,7 @@ class DapsysBinaryReader:
         Else the bytes will be unpacked.
         Example: To read 8 32-bit ints, the function will read 4 bytes 8 times. Each 4-byte block will be compared with 'CDCDCDCD'.
         If the comparison is true, the value will be set to None. Else it will unpack the bytes to an int.
+
         :param type_fmt: Type fmt string
         :param count: Number of values to read
         :return: Tuple containing the read objects
@@ -37,6 +38,7 @@ class DapsysBinaryReader:
     def _read_direct(self, type_fmt: str, count: int) -> Tuple:
         """
         Will read a number of values specified by the type fmt from a binary reader
+
         :param type_fmt: Type fmt string of the data to read
         :param count: number of values to read
         :return: Tuple containing the read values
@@ -74,6 +76,7 @@ class DapsysBinaryReader:
         Tuple[float, ...], Tuple[int, ...], Tuple[Optional[float], ...], Tuple[Optional[int]]]:
         """
         Will read a tuple of values according to type_fmt.
+
         :param type_fmt: Type fmt string
         :param count: Number of values to read
         :param check_null: If the function should check if each function is unitilized according to visual C++ (0xCDCDCDCD)
@@ -115,6 +118,7 @@ class DapsysBinaryReader:
             Optional[Union[float, int]]:
         """
         Will read a single value according to type_fmt.
+
         :param type_fmt: Type fmt string
         :param check_null: If the function should check if each function is unitilized according to visual C++ (0xCDCDCDCD)
         :return:Tuple containig the read data
@@ -132,6 +136,7 @@ class DapsysBinaryReader:
     def read_u32(self, check_null=False) -> Optional[int]:
         """
         Will read a single u32 value
+
         :param check_null: Wether to check for null
         :return: An int or none.
         """
@@ -148,6 +153,7 @@ class DapsysBinaryReader:
     def read_f32(self, check_null=False) -> Optional[float]:
         """
         Will read a single f32 value
+
         :param check_null: Wether to check for null
         :return: A float or none.
         """
@@ -164,6 +170,7 @@ class DapsysBinaryReader:
     def read_f64(self, check_null=False) -> Optional[float]:
         """
         Will read a single f64 value
+
         :param check_null: Wether to check for null
         :return: A float or none.
         """
@@ -179,6 +186,7 @@ class DapsysBinaryReader:
     def read_ubytes(self, count: int) -> Tuple[int, ...]:
         """
         Reads the multiple bytes as usigned value
+
         :param count: Number of bytes to read
         :return: A tuple of integer values representing the individual usnigned values of the read bytes
         """
@@ -193,6 +201,7 @@ class DapsysBinaryReader:
     def skip_32(self, count=1):
         """
         Advances the reader in 32-bit steps
+
         :param count: Number of 32-bit blocks to skip, defaults to 1
         """
         self.skip(4 * count)
@@ -200,6 +209,7 @@ class DapsysBinaryReader:
     def skip_64(self, count=1):
         """
         Advances the reader in 64-bit steps
+
         :param count: Number of 64-bit blocks to skip, defaults to 1
         """
         self.skip(8 * count)
@@ -207,6 +217,7 @@ class DapsysBinaryReader:
     def read_bool(self) -> bool:
         """
         Reads a dapsys bool (reads 1 byte, then skips 3 additional bytes)
+
         :return: Value of the read bool
         """
         v = self.binio.read(1)
@@ -224,6 +235,7 @@ class DapsysBinaryReader:
     def read_array(self, type_fmt: str) -> Union[Tuple[int, ...], Tuple[float, ...]]:
         """
         Reads an u32 value as x and then the following x values according to type fmt
+
         :param type_fmt: Type fmt of the values
         :return: Tuple containing x values
         """
@@ -240,6 +252,7 @@ class DapsysBinaryReader:
     def read_f32_array(self) -> Tuple[float, ...]:
         """
         Reads a single u32 value as x and then the following x f32 values as an array
+
         :return: Tuple containing x float values
         """
         return self.read_array('f')
@@ -247,6 +260,7 @@ class DapsysBinaryReader:
     def read_f64_array(self) -> Tuple[float, ...]:
         """
         Reads a single u32 value as x and then the following x f64 values as an array
+
         :return: Tuple containing x float values
         """
         return self.read_array('d')
@@ -254,6 +268,7 @@ class DapsysBinaryReader:
     def read_str(self, encoding='latin_1') -> str:
         """
         Reads a single u32 value as x and then the following x bytes and decodes them as string
+
         :param encoding: Encoding to use when decoding the bytes, defaults to 'latin_1'
         :return: The decoded string
         """
@@ -264,6 +279,7 @@ class DapsysBinaryReader:
     def _read_nparray(self, dtype: np.dtype) -> npt.NDArray:
         """
         Reads an u32 value as x and then uses numpy fromfile to read x following values of the specified type
+
         :param dtype: Dtype of the values to read
         :return: Numpy array containing the values read
         """
@@ -274,6 +290,7 @@ class DapsysBinaryReader:
     def read_f32_nparray(self) -> npt.NDArray[np.float32]:
         """
         Reads an u32 value as x and then uses numpy fromfile to read x following f32 values of the specified type
+
         :return: Numpy array containing the read np.float32 values
         """
         return self._read_nparray(np.dtype(np.float32))
@@ -281,6 +298,7 @@ class DapsysBinaryReader:
     def read_f64_nparray(self) -> npt.NDArray[np.float64]:
         """
         Reads an u32 value as x and then uses numpy fromfile to read x following f64 values of the specified type
+
         :return: Numpy array containing the read np.float64 values
         """
         return self._read_nparray(np.dtype(np.float64))
@@ -288,6 +306,7 @@ class DapsysBinaryReader:
     def read_u32_nparray(self) -> npt.NDArray[np.uint32]:
         """
         Reads an u32 value as x and then uses numpy fromfile to read x following u32 values of the specified type
+
         :return: Numpy array containing the read np.uint32 values
         """
         return self._read_nparray(np.dtype(np.uint32))

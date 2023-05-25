@@ -13,12 +13,14 @@ from pydapsys.util.floats import float_comp
 
 class DapsysToNeoHelper:
     """ Converter to put various Dapsys streams neo structures
-
-
-    :param file: PyDapsys dapsys file
     """
 
     def __init__(self, file: File):
+        """
+        Initialize helper for a file.
+
+        :param file: the file the helper reads from
+        """
         self.file = file
 
     def _get_datapage_typechecked(self, pid: int, ptype: PageType) -> DataPage:
@@ -48,6 +50,7 @@ class DapsysToNeoHelper:
     def _pageids_to_event(self, page_ids: Union[Sequence[int], npt.NDArray[np.uint32]], name: str = "") -> neo.Event:
         """Converts data from a sequence (or numpy array) of page ids to a neo event.
         The labels will be taken from the page text and the event times from the first timestamp (timestamp_a)
+
         :param page_ids: Page ids of the comment pages
         :param name: name of the returned neo event
         :return: A neo event containing the text of the comment pages as labels and their first timestamps as times
@@ -94,6 +97,7 @@ class DapsysToNeoHelper:
          required parameter on :class:`neo.SpikeTrain`. t_stop must be greater than the last timestamp of the train.
 
          The times of the spike train will be taken from the timestamp_a of the streams comment pages.
+
         :param stream: The stream to convert
         :param t_stop: t_stop parameter to set on :class:`neo.SpikeTrain`
         :param name: Name of the spike train. Will default to the name of the stream
@@ -108,6 +112,7 @@ class DapsysToNeoHelper:
         """Orders a number of comment pages by their text and emits one event for each unique text.
         The times are loaded from the comment pages timestamp_a, will have no labels and the name of the events will be
         the unique text.
+
         :param page_ids: Ids of the comment pages
         :return: An iterable of neo events
         """
@@ -122,6 +127,7 @@ class DapsysToNeoHelper:
         """Orders the comment pages of a text stream by their text and emits one event for each unique text.
         The times are loaded from the comment pages timestamp_a, will have no labels and the name of the events will be
         the unique text.
+
         :param stream: A text stream to convert
         :return: An iterable of neo events
         """
@@ -132,7 +138,8 @@ class DapsysToNeoHelper:
     def _group_recordingsegments(self, rec_pages: Iterable[WaveformPage], tolerance: float = 1e-5) -> Iterable[
         List[WaveformPage]]:
         """Groups consecutive recording pages into lists, if the difference between the end of the last page and the start
-        of the next one is less than the threshold and they have the same sampling interval
+        of the next one is less than the threshold and they have the same sampling interval.
+
         :param rec_pages: Recording pages to group. Must be in orderly sequence.
         :param tolerance: Tolerance for grouping, defaults to 1e-5
         :return: An iterable of lists containing grouped recording pages

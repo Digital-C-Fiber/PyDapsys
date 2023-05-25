@@ -46,6 +46,7 @@ class File:
         Iterable[DataPage], Iterable[TextPage], Iterable[WaveformPage]]:
         """
         Yields all pages associated with the given stream path. To check for sanity, the expected stream type can be passed to the method.
+
         :param path: path of the stream in the table of contents (without the root node)
         :param stype: The expected type of the stream. If the stream is of a different type, the function will raise an exception. None by default.
         :return: An iterable of all pages associated with the stream
@@ -61,6 +62,7 @@ class File:
     @staticmethod
     def from_binary(binio: BinaryIO, byte_order='<') -> File:
         """Reads a DAPSYS file from the given binary io object and directly constructs a new File class from it.
+
         :param binio: BinaryIO object to read from
         :param byte_order: byte order to use when reading from the binary io object. Defaults to little endian.
         :return: The File object constructed from the contents of the io stream
@@ -71,6 +73,7 @@ class File:
 
 def read_file(binio: BinaryIO, byte_order='<') -> File:
     """Reads a DAPSYS file from the given binary io object and directly constructs a new File class from it.
+
     :param binio: BinaryIO object to read from
     :param byte_order: byte order to use when reading from the binary io object. Defaults to little endian.
     :return: The File object constructed from the contents of the io stream

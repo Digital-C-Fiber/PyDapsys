@@ -10,6 +10,7 @@ class INeoConverter(ABC):
     def to_neo(self) -> neo.Block:
         """
         Create a neo structure based on the given recording
+
         :return: A neo block containing the data from the recording
         """
         ...

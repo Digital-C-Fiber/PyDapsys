@@ -76,6 +76,7 @@ class ChildContainer:
 
     def path(self, path: str) -> Entry:
         """Returns the Entry from the given relative path.
+
         :param path: Relative path to the target entry
         :returns: the target entry
         """
@@ -110,7 +111,8 @@ class Folder(ChildContainer, Entry):
 @dataclass
 class Root(ChildContainer):
     """The root of the table of contents. It differentiates from a :class:`pydapsys.toc.entry.Folder`,
-    as it does not have a ToC id and contains the footer string of the file."""
+    as it does not have a ToC id and contains the footer string of the file.
+    """
     name: str
     """name of the root"""
     footer: str
