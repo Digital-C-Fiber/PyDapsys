@@ -22,6 +22,7 @@ class UnknownPageTypeError(BinaryElementTypeError):
 def _read_display_properties(file: DapsysBinaryReader) -> DisplayProperties:
     """
     Reads a block of display properties from a binary file
+
     :param file: Opened binary file to read from
     :return: The read plot config object
     """
@@ -41,6 +42,7 @@ def _read_display_properties(file: DapsysBinaryReader) -> DisplayProperties:
 def _read_toc_entry(file: DapsysBinaryReader) -> Entry:
     """
     Reads an entry from the table of contents. Children will be read recursively.
+
     :param file: Opened binary file to read from
     :return: The entry, populated with its children (if any)
     """
@@ -68,6 +70,7 @@ def _read_toc_entry(file: DapsysBinaryReader) -> Entry:
 def _read_toc(file: DapsysBinaryReader) -> Root:
     """
     Reads the Root of the table of contents and recursively all further elements of it.
+
     :param file: Opened binary file to read from
     :return: The root of the ToC
     """
@@ -83,6 +86,7 @@ def _read_toc(file: DapsysBinaryReader) -> Root:
 def _read_page(file: DapsysBinaryReader) -> DataPage:
     """
     Reads a page. Dynamically creates either a text page or a recording page, depending on the read page type.
+
     :param file: Opened binary file to read from
     :return: A DataPage, either a TextPage or a RecordingPage, depending on the read page type
     """
@@ -107,6 +111,7 @@ def _read_page(file: DapsysBinaryReader) -> DataPage:
 
 def read_from(binio: BinaryIO, byte_order='<') -> Tuple[Root, Dict[int, DataPage]]:
     """Reads a DAPSYS file from a readable binaryio object
+
     :param binio:  binary io to read from
     :param byte_order: Byte order to use when reading
     :returns: A tuple containing the Root of the table of contents and a dictionary mapping the page ids to their respective pages

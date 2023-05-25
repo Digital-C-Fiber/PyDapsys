@@ -56,6 +56,7 @@ class CaseInsensitiveDict(MutableMapping[str, _VT], Generic[_VT]):
     def select(self, selector: Callable[[str, _VT], bool]) -> CaseInsensitiveDictView[_VT]:
         """
         Returns a view of the dictionary only containing the items for which selector returned true
+
         :param selector: Function for selecting items that should be present in the dict view
         :return: A dict view
         """
