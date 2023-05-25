@@ -1,2 +1,2 @@
-from entry import Root, Folder, StreamType, Stream, Entry, EntryType
+from pydapsys.toc.entry import Folder, StreamType, Stream, EntryType
 

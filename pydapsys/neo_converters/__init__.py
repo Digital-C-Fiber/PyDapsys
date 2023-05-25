@@ -1,3 +1,7 @@
+from pydapsys.neo_converters.helper import DapsysToNeoHelper
+from pydapsys.neo_converters.interface import INeoConverter
+from pydapsys.neo_converters.ni_pulse_stim import NIPulseStimRecordingConverter
+
 class ExtraDependencyNotFoundError(Exception):
     package_name = "PyDapsys"
 
@@ -20,6 +24,3 @@ try:
 except ImportError as e:
     raise ExtraDependencyNotFoundError("Neo", "neo", extra_name="neo") from e
 
-from helper import DapsysToNeoHelper
-from interface import INeoConverter
-from ni_pulse_stim import NIPulseStimRecordingConverter
