@@ -16,7 +16,12 @@ sys.path.insert(0, os.path.abspath("../.."))
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.autodoc']
+extensions = ['sphinx.ext.autodoc', 'autoapi.extension']
+autodoc_typehints = 'description'
+autoapi_type = 'python'
+autoapi_dirs = ['../../pydapsys']
+autoapi_python_use_implicit_namespaces = True
+autoapi_python_class_content = 'both'
 
 templates_path = ['_templates']
 exclude_patterns = []
