@@ -1,0 +1,68 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: PyDapsys
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - family-names: Konradi
+    given-names: Peter
+    orcid: 'https://orcid.org/0000-0001-7755-0199'
+  - family-names: Troglio
+    given-names: Alina
+    orcid: 'https://orcid.org/0000-0001-7770-4389'
+  - family-names: Namer
+    given-names: Barbara
+    orcid: 'https://orcid.org/0000-0001-7500-2842'
+  - family-names: Kutafina
+    given-names: Ekaterina
+    orcid: 'https://orcid.org/0000-0002-3430-5123'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.7970520
+    description: Repository DOI (all versions)
+repository-code: 'https://github.com/Digital-C-Fiber/PyDapsys'
+url: 'https://github.com/Digital-C-Fiber/PyDapsys'
+repository-artifact: 'https://pypi.org/project/pydapsys/'
+keywords:
+  - neurophysiology
+  - microneurography
+  - open data
+license: BSD-3-Clause
+commit: 4b2a8a3c937bb967f29a4d3f666cac2338327f6e
+version: 0.2.1
+date-released: '2023-05-25'
+preferred-citation:
+  type: article
+  title: "PyDapsys: an open-source library for accessing electrophysiology data recorded with DAPSYS"
+  journal: Frontiers in Neuroinformatics
+  volume: 17
+  month: 9
+  year: 2023
+  identifiers:
+  - type: doi
+    value: 10.3389/fninf.2023.1250260
+  authors:
+  - family-names: Konradi
+    given-names: Peter
+    orcid: 'https://orcid.org/0000-0001-7755-0199'
+  - family-names: Troglio
+    given-names: Alina
+    orcid: 'https://orcid.org/0000-0001-7770-4389'
+  - family-names: Perez Garriga
+    given-names: Ariadna
+    orcid: 'https://orcid.org/0000-0001-8840-1770'
+  - family-names: Pérez Martín
+    given-names: Aarón
+    orcid: 'https://orcid.org/0000-0001-6741-1435'
+  - family-names: Röhrig
+    given-names: Rainer
+    orcid: 'https://orcid.org/0000-0002-0032-5118'
+  - family-names: Namer
+    given-names: Barbara
+    orcid: 'https://orcid.org/0000-0001-7500-2842'
+  - family-names: Kutafina
+    given-names: Ekaterina
+    orcid: 'https://orcid.org/0000-0002-3430-5123'
+
