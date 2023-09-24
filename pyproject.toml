@@ -6,6 +6,7 @@ authors = ["Peter Konradi <codingchipmunk@posteo.net>"]
 readme = "README.md"
 license = "BSD-3-Clause"
 repository = "https://github.com/Digital-C-Fiber/PyDapsys"
+include = ["CITATION.cff"]
 keywords = ["microneurography", "dapsys", "neurophysiology", "electrophysiology"]
 classifiers = ["Development Status :: 4 - Beta",
     "Intended Audience :: Developers", "Intended Audience :: Science/Research",
