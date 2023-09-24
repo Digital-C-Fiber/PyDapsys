@@ -123,6 +123,7 @@ neo_block = NIPulseStimRecordingConverter(file, grouping_tolerance=1e-9).to_neo(
         * ... [Text] tracks... -> Converted into spike trains
 
 ## Citation
+(for details see the [CITATION.cff](CITATION.cff))
 If you refer to this project in an article, we would appreciate it if you cited the publication "PyDapsys: an open-source library for accessing electrophysiology data recorded with DAPSYS" ([doi:10.3389/fninf.2023.1250260](https://doi.org/10.3389/fninf.2023.1250260)) published in Frontiers in Neuroinformatics Vol. 17.
 
 If you actively used the library to gain results in your publication, it might also make sense for you to cite the specific release via the [Zenodo archive](https://zenodo.org/record/7970520). On the right side, you will see an individual DOI listed for each version released since v0.2.1. Just pick the DOI matching your version. Alternatively, you can also cite all versions of this library.
